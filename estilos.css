@@ -1,1 +1,280 @@
+/* Variables CSS para los colores */
+:root {
+    --primary-red: #e74c3c; /* Rojo principal */
+    --light-blue: #3498db; /* Celeste claro */
+    --dark-blue: #2980b9; /* Celeste oscuro para acentos */
+    --approved-color: #27ae60; /* Verde para ramos aprobados */
+    --blocked-color: #95a5a6; /* Gris para ramos bloqueados */
+    --text-color: #333;
+    --background-light: #f4f4f4;
+    --card-background: #ffffff;
+    --border-color: #ddd;
+}
 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--primary-red);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+}
+
+.motivational-message {
+    font-style: italic;
+    margin-top: 10px;
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Columnas responsivas */
+    gap: 25px;
+    padding: 30px;
+    max-width: 1300px;
+    margin: 30px auto;
+}
+
+.semester {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    border: 1px solid var(--border-color);
+}
+
+.semester:hover {
+    transform: translateY(-5px);
+}
+
+.semester h2 {
+    background-color: var(--light-blue);
+    color: white;
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+    font-size: 1.6em;
+    border-bottom: 1px solid var(--dark-blue);
+}
+
+.course-list {
+    list-style: none;
+    padding: 15px;
+    margin: 0;
+}
+
+.course-item {
+    background-color: var(--background-light);
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden; /* Para el efecto de la marca de agua */
+    font-weight: 500;
+}
+
+.course-item:last-child {
+    margin-bottom: 0;
+}
+
+.course-item:hover:not(.approved):not(.blocked) {
+    background-color: #e0e0e0;
+    transform: translateX(5px);
+}
+
+/* Estilos para ramos aprobados */
+.course-item.approved {
+    background-color: var(--approved-color);
+    color: white;
+    text-decoration: line-through;
+    opacity: 0.9;
+    pointer-events: none; /* Evita clics adicionales */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.course-item.approved::before {
+    content: 'APROBADO';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    font-size: 2.5em;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.15); /* Marca de agua sutil */
+    z-index: 1;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Estilos para ramos bloqueados (que no cumplen requisitos) */
+.course-item.blocked {
+    background-color: var(--blocked-color);
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+    position: relative;
+}
+
+.course-item.blocked::after {
+    content: 'BLOQUEADO';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(25deg);
+    font-size: 2em;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Modal de mensajes */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para cubrir toda la ventana */
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    left: 0;
+    top: 0;
+    width: 100%; /* Ancho completo */
+    height: 100%; /* Alto completo */
+    overflow: auto; /* Habilitar scroll si el contenido es demasiado grande */
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: fadeInScale 0.3s ease-out;
+    border: 2px solid var(--primary-red);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.close-button {
+    color: var(--primary-red);
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--dark-blue);
+}
+
+#modal-message {
+    font-size: 1.3em;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+#modal-motivational-message {
+    font-size: 1.1em;
+    color: var(--light-blue);
+    font-weight: bold;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+    .curriculum-grid {
+        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .semester h2 {
+        font-size: 1.4em;
+    }
+
+    .course-item {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+
+    .course-item.approved::before,
+    .course-item.blocked::after {
+        font-size: 1.8em;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    #modal-message {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1.5rem 0;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    .curriculum-grid {
+        padding: 15px;
+    }
+
+    .semester h2 {
+        font-size: 1.2em;
+    }
+
+    .course-item {
+        font-size: 0.9em;
+    }
+
+    .course-item.approved::before,
+    .course-item.blocked::after {
+        font-size: 1.5em;
+    }
+}
